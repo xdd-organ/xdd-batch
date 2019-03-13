@@ -16,6 +16,7 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -33,10 +34,10 @@ public class BatchConfig {
     private HelloItemProcessor processor;
 
     @Bean
-    public Job processJob() {
+    public Job processJob(@Qualifier("orderStep1")Step orderStep1) {
         return jobBuilderFactory.get("processJob")
                 .incrementer(new RunIdIncrementer()).listener(listener)
-                .flow(orderStep1()).end().build();
+                .flow(orderStep1).end().build();
     }
 
     @Bean
